@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#!/usr/bin/python3
 
 import requests
 import os
 import urllib
-import base64
-from flask import request, Flask, redirect
+from flask import request, Flask, redirect, render_template
 from flask_socketio import SocketIO
+from spotify import User
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -18,18 +17,8 @@ CLIENT_ID = os.environ["SPOTIFY_ID"]
 CLIENT_SECRET = os.environ["SPOTIFY_SECRET"]
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 AUTH_URL = "https://accounts.spotify.com/authorize?"
-BASE_URL = "https://api.spotify.com/v1/"
 REDIRECT_URI = "http://localhost:8000/callback"
 SCOPES = ["user-read-private", "user-read-email"]
-
-
-def get_access_token():
-    pass
-    # # convert response to json
-    # auth_response = response.json()
-    # access_token = auth_response["access_token"]
-    # print(access_token)
-    # return access_token
 
 
 def init_server():
@@ -39,7 +28,10 @@ def init_server():
 
 @app.route("/dashboard")
 def dashboard():
-    return "Welcome!"
+    # Va chercher informations du compte spotify
+    user = User(os.environ["SPOTIFY_TOKEN"])
+    return user.name
+    # return render_template("dashboard.html", title="Dashboard")
 
 
 @app.route("/callback")
@@ -73,6 +65,4 @@ def login():
 
 
 if __name__ == "__main__":
-    # get_access_token()
     init_server()
-    redirect
