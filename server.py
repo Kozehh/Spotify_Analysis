@@ -32,8 +32,8 @@ def init_server():
 def dashboard():
     # Va chercher informations du compte spotify
     user = User(os.environ["SPOTIFY_TOKEN"])
-    user_playlists = user.get_user_playlists()
-    
+    user.get_user_playlists()
+
     return user.name
     # return render_template("dashboard.html", title="Dashboard")
 
