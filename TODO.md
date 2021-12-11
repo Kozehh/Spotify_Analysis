@@ -4,13 +4,13 @@
 
 # Spotify
 
-- Access the user's Playlist
+- Access the user's Playlists
 -
 
 # Web App
 
 - Do some basic html/css/js
-- Show the user's playlists to the user so he can pick
+- Show vizualisation of sentiment analysis for every playlist the user has.
 
 # Visualization
 

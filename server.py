@@ -12,24 +12,28 @@ from spotify import User
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-
+SERVER_PORT = "8000"
+SERVER_HOST = "http://localhost"
+SERVER_ADDR = f"{SERVER_HOST}:{SERVER_PORT}"
 CLIENT_ID = os.environ["SPOTIFY_ID"]
 CLIENT_SECRET = os.environ["SPOTIFY_SECRET"]
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 AUTH_URL = "https://accounts.spotify.com/authorize?"
-REDIRECT_URI = "http://localhost:8000/callback"
+REDIRECT_URI = f"{SERVER_ADDR}/callback"
 SCOPES = ["user-read-private", "user-read-email"]
 
 
 def init_server():
-    print("[INFO] Please Login at http://localhost:8000/login")
-    socketio.run(app=app, host="localhost", port=8000)
+    print(f"[INFO] Please Login at {SERVER_ADDR}/login")
+    socketio.run(app=app, host="", port=8000)
 
 
 @app.route("/dashboard")
 def dashboard():
     # Va chercher informations du compte spotify
     user = User(os.environ["SPOTIFY_TOKEN"])
+    user_playlists = user.get_user_playlists()
+    
     return user.name
     # return render_template("dashboard.html", title="Dashboard")
 
@@ -47,7 +51,7 @@ def callback():
         r = requests.post(TOKEN_URL, data=params, auth=(CLIENT_ID, CLIENT_SECRET))
         token = r.json()["access_token"]
         os.environ["SPOTIFY_TOKEN"] = token
-        return redirect("http://localhost:8000/dashboard")
+        return redirect(f"{SERVER_ADDR}/dashboard")
 
 
 @app.route("/login")
