@@ -36,6 +36,41 @@ class Artist:
         )
 
 
+class AudioFeatures:
+    def __init__(
+        self,
+        acousticness,
+        danceability,
+        energy,
+        instrumentalness,
+        speechiness,
+        liveness,
+        loudness,
+        valence,
+    ):
+        self.aacousticness = acousticness
+        self.danceability = danceability
+        self.energy = energy
+        self.instrumentalness = instrumentalness
+        self.speechiness = speechiness
+        self.liveness = liveness
+        self.loudness = loudness
+        self.valence = valence
+
+    @classmethod
+    def build_from_json(cls, features_json):
+        return cls(
+            features_json["acousticness"],
+            features_json["danceability"],
+            features_json["energy"],
+            features_json["instrumentalness"],
+            features_json["speechiness"],
+            features_json["liveness"],
+            features_json["loudness"],
+            features_json["valence"],
+        )
+
+
 class Track:
     """Track object in Spotify API"""
 
@@ -47,6 +82,7 @@ class Track:
         self.href = href
         self.popularity = popularity
         self.artists = artists
+        self.audio_features = self._get_audio_features()
 
     @classmethod
     def build_from_json(cls, track_json):
@@ -57,6 +93,11 @@ class Track:
             track_json["popularity"],
             [Artist.build_from_json(artist) for artist in track_json["artists"]],
         )
+
+    def _get_audio_features(self):
+        r = requests.get(BASE_URL + f"audio-features/{self.id}", headers=headers)
+        if r.status_code == 200:
+            return AudioFeatures.build_from_json(r.json())
 
 
 class Playlist:
