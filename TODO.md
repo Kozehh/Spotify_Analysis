@@ -16,3 +16,8 @@
 # Analyze
 
 - Sentiment Analysis based on songs lyrics
+
+# Next
+
+- Analyse lyrics with a sentiment analysis algo
+- Visualize results of the sentiment analysis with different graphs
