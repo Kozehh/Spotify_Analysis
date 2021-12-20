@@ -4,8 +4,7 @@
 
 # Spotify
 
-- Access the user's Playlists
--
+- Get playlist tracks infos for viz / analyze
 
 # Web App
 
@@ -14,5 +13,6 @@
 
 # Visualization
 
-- Make a dataframe of all the songs features in the selected playlist
-- Make different graphs about the this dataframe
+# Analyze
+
+- Sentiment Analysis based on songs lyrics

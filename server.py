@@ -5,12 +5,15 @@
 import requests
 import os
 import urllib
-from flask import request, Flask, redirect, render_template
+from flask import request, Flask, redirect
 from flask_socketio import SocketIO
 from spotify import User
+import pickle
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+user = None
 
 SERVER_PORT = "8000"
 SERVER_HOST = "http://localhost"
@@ -30,12 +33,18 @@ def init_server():
 
 @app.route("/dashboard")
 def dashboard():
+    global user
     # Va chercher informations du compte spotify
     user = User(os.environ["SPOTIFY_TOKEN"])
     user.get_user_playlists()
 
     return user.name
     # return render_template("dashboard.html", title="Dashboard")
+
+
+@app.route("/user")
+def user():
+    return pickle.dumps(user)
 
 
 @app.route("/callback")
